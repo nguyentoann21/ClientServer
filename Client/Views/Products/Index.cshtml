@@ -1,0 +1,56 @@
+﻿@model Shared.PageView.ProductPageView
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div>
+    <form asp-controller="Products" asp-action="SearchByName" method="get" asp-route-id="name">
+        <div class="form-group">
+            <label for="search-name">Search by Name:</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Enter product name">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<a asp-action="Create" asp-controller="Products">Create</a>
+
+<div class="row">
+    @foreach (var product in Model.Products)
+    {
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img src="@product.ProductImage" class="card-img-top" alt="@product.ProductName">
+                <div class="card-body">
+                    <h5 class="card-title">@product.ProductName</h5>
+                    <p class="card-text">@product.ProductDescription</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a href="@Url.Action("Details", "Products", new { id = product.ProductID })" class="btn btn-sm btn-outline-secondary">View</a>
+                            <a href="@Url.Action("Edit", "Products", new { id = product.ProductID })" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        </div>
+                        <small class="text-muted">@product.ProductPrice.ToString("c")</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <nav aria-label="Product navigation">
+        <ul class="pagination">
+            @if (Model.PageNumber > 1)
+            {
+                <li class="page-item"><a class="page-link" href="@Url.Action("Page", "Product", new { pageNumber = Model.PageNumber - 1 })">Previous</a></li>
+            }
+            @for (int i = 1; i <= Math.Ceiling((double)Model.TotalProducts / Model.PageSize); i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")"><a class="page-link" href="@Url.Action("Page", "Product", new { pageNumber = i })">@i</a></li>
+            }
+            @if (Model.PageNumber < Math.Ceiling((double)Model.TotalProducts / Model.PageSize))
+            {
+                <li class="page-item"><a class="page-link" href="@Url.Action("Page", "Product", new { pageNumber = Model.PageNumber + 1 })">Next</a></li>
+            }
+        </ul>
+    </nav>
+</div>

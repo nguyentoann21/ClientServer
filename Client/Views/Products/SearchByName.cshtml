@@ -1,0 +1,41 @@
+﻿@model Shared.PageView.ProductByView
+
+@{
+    ViewData["Title"] = "Search By";
+}
+
+<div>
+    <form asp-controller="Products" asp-action="SearchByName" method="get" asp-route-id="name">
+        <div class="form-group">
+            <label for="search-name">Search by Name:</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Enter product name">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<div>
+    <h3>@ViewBag.Message</h3>
+</div>
+
+<div class="row">
+
+        @foreach (var product in Model.Products)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img src="@product.ProductImage" class="card-img-top" alt="@product.ProductName">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.ProductName</h5>
+                        <p class="card-text">@product.ProductDescription</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="@Url.Action("Details", "Products", new { id = product.ProductID })" class="btn btn-sm btn-outline-secondary">View</a>
+                            </div>
+                            <small class="text-muted">@product.ProductPrice.ToString("c")</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+</div>

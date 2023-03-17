@@ -1,0 +1,73 @@
+﻿@model Shared.Dtos.CreateProductDto
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Update", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label asp-for="ProductID" class="control-label"></label>
+            <input asp-for="ProductID" class="form-control" readonly />
+            <span asp-validation-for="ProductID" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+        @Html.LabelFor(model => model.ProductName)
+        @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+        @Html.LabelFor(model => model.ProductDescription)
+        @Html.TextAreaFor(model => model.ProductDescription, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ProductDescription, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+        @Html.LabelFor(model => model.ProductPrice)
+        @Html.TextBoxFor(model => model.ProductPrice, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ProductPrice, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+        @Html.LabelFor(model => model.Quantity)
+        @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+        @Html.LabelFor(model => model.CreateOn)
+        @Html.TextBoxFor(model => model.CreateOn, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker" })
+        @Html.ValidationMessageFor(model => model.CreateOn, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <span readonly>
+                <img src="@Model.ProductImage" width="100" height="100" alt="@Model.ProductName" />
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ManufacturerID" class="control-label"></label>
+            <select asp-for="ManufacturerID" class="form-control" asp-items="ViewBag.Manufacturer"></select>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+}
+
+@section scripts {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+        <script>
+            $(function () {
+                $('.datepicker').datepicker({
+                    format: 'dd/mm/yyyy',
+                    autoclose: true
+                });
+            });
+        </script>
+}
