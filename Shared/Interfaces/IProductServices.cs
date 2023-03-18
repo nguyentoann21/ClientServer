@@ -11,7 +11,7 @@ namespace Shared.Interfaces
     {
         Task<List<Product>> GetAll(int numberPage, int sizePage);
 
-        Task<Product> GetSingleByID(string id);
+        Task<Product> GetSingleByID(int id);
 
         Task<bool> Create(Product product);
 
@@ -21,7 +21,7 @@ namespace Shared.Interfaces
 
         Task<IEnumerable<Product>> GetProductByManufacturer(string manufacturer);
 
-        Product GetByID(string id);
+        Product GetByID(int id);
 
         Task<IEnumerable<Product>> SearchByName(string name);
 

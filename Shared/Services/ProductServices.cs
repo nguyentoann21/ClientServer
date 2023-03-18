@@ -35,7 +35,7 @@ namespace Shared.Services
             return result;
         }
 
-        public async Task<Product> GetSingleByID(string id)
+        public async Task<Product> GetSingleByID(int id)
         {
             var result = await _db.Products.Include(x => x.Manufacturers).FirstOrDefaultAsync(x => x.ProductID == id);
             return result;
@@ -53,7 +53,7 @@ namespace Shared.Services
             return await _db.Products.Where(p => p.ManufacturerID == manufacturer).ToListAsync();
         }
 
-        public Product GetByID(string productId)
+        public Product GetByID(int productId)
         {
             return _db.Products.FirstOrDefault(p => p.ProductID == productId);
         }

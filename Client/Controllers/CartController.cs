@@ -1,58 +1,78 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Shared.Interfaces;
 using Shared.Models;
-using Shared.PageView;
-using Shared.Services;
+using System.Net;
 using System.Net.Http;
-using System.Text;
 
 namespace Client.Controllers
 {
     public class CartController : Controller
     {
-        HttpClient httpClient;
-
-        public CartController()
-        {
-            httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("https://localhost:7186/api/");
-        }
-
+        [Route("Cart/AddToCart/{id}/{quantity}")]
         [HttpPost]
-        public async Task<IActionResult> AddToCart(string productId, int quantity)
+        public async Task<ActionResult> AddToCart(string productId, int quantity)
         {
-            var product = await GetProduct(productId);
+            
+            var client = new HttpClient();
 
-            if (product == null)
+            var response = await client.PostAsync($"https://localhost:7186/api/carts/AddToCart?productId="+productId+"&quantity="+quantity, null);
+
+            if (response.IsSuccessStatusCode)
             {
-                return NotFound();
+                var content = await response.Content.ReadAsStringAsync();
+                var cartItems = JsonConvert.DeserializeObject<List<Product>>(content);
+                return View("Index", cartItems);
             }
-
-            var content = new StringContent(JsonConvert.SerializeObject(new { productId, quantity }), Encoding.UTF8, "application/json");
-            var response = await httpClient.PostAsync("cart", content);
-
-            if (!response.IsSuccessStatusCode)
+            else
             {
-                return BadRequest();
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                return View("Error", errorMessage);
             }
-
-            return RedirectToAction("Index", "Cart");
         }
 
-        private async Task<Product> GetProduct(string productId)
+
+
+
+        public async Task<ActionResult> Index()
         {
-            var response = await httpClient.GetAsync($"products/GetSingleByID/id={productId}");
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:7186/api/carts/Get");
 
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                return null;
+                var products = await response.Content.ReadAsAsync<List<Product>>();
+                return View(products);
             }
+            else
+            {
+                return View("Error");
+            }
+        }
 
-            var json = await response.Content.ReadAsStringAsync();
-            var product = JsonConvert.DeserializeObject<Product>(json);
-
-            return product;
+        [Route("{productId}")]
+        [HttpPost]
+        public async Task<ActionResult> RemoveProduct(string productId)
+        {
+            using (var client = new HttpClient())
+            {
+                var url = $"https://localhost:7186/api/carts/RemoveProduct?productId={productId}";
+                var response = await client.DeleteAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var products = await response.Content.ReadAsAsync<List<Product>>();
+                    return View("Index", products);
+                }
+                else if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    ViewBag.ErrorMessage = "Product not found in cart";
+                    return View("Error");
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Error removing product from cart";
+                    return View("Error");
+                }
+            }
         }
 
     }

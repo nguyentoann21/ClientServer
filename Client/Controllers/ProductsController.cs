@@ -18,8 +18,10 @@ namespace Client.Controllers
 
         public ProductsController()
         {
-            httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("https://localhost:7186/api/");
+            httpClient = new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:7186/api/")
+            };
         }
 
         public async Task<IActionResult> Index()
@@ -75,12 +77,25 @@ namespace Client.Controllers
             {
                 Products = productDTO
             };
-            ViewBag.Total = "The (" + id + ") have " + productDTO.Count + " items(s)"; 
+            ViewBag.Total = "The (" + id + ") have " + productDTO.Count + " items(s)";
             return View(view);
         }
 
         public async Task<IActionResult> SearchByName(string name)
         {
+            if(name == null)
+            {
+                var res = await httpClient.GetStringAsync("products/GetProducts");
+                var rs = JsonConvert.DeserializeObject<List<Product>>(res);
+
+                var products = new ProductByView
+                {
+                    Products = rs
+                };
+                ViewBag.Message = "Found " + rs.Count + " item(s)";
+                return View(products);
+
+            }
             var response = await httpClient.GetStringAsync("products/SearchByName/name?name=" + name);
             var result = JsonConvert.DeserializeObject<List<Product>>(response);
 
@@ -106,26 +121,24 @@ namespace Client.Controllers
         public async Task<IActionResult> Create(CreateProductDto productDto)
         {
             var url = "https://localhost:7186/api/products/Create";
-            var content = new MultipartFormDataContent();
-
-            content.Add(new StringContent(productDto.ProductID), "ProductID");
-            content.Add(new StringContent(productDto.ProductName), "ProductName");
-            content.Add(new StringContent(productDto.ProductDescription), "ProductDescription");
-            content.Add(new StringContent(productDto.ProductPrice.ToString()), "ProductPrice");
-            content.Add(new StringContent(productDto.Quantity.ToString()), "Quantity");
-            content.Add(new StringContent(productDto.CreateOn.ToString("dd/MM/yyyy")), "CreateOn");
-            content.Add(new StreamContent(productDto.ProductImage.OpenReadStream()), "ProductImage", productDto.ProductImage.FileName);
-            content.Add(new StringContent(productDto.ManufacturerID), "ManufacturerID");
+            var content = new MultipartFormDataContent
+            {
+                { new StringContent(productDto.ProductName), "ProductName" },
+                { new StringContent(productDto.ProductDescription), "ProductDescription" },
+                { new StringContent(productDto.ProductPrice.ToString()), "ProductPrice" },
+                { new StringContent(productDto.Quantity.ToString()), "Quantity" },
+                { new StringContent(productDto.CreateOn.ToString("dd/MM/yyyy")), "CreateOn" },
+                { new StreamContent(productDto.ProductImage.OpenReadStream()), "ProductImage", productDto.ProductImage.FileName },
+                { new StringContent(productDto.ManufacturerID), "ManufacturerID" }
+            };
 
             var response = await httpClient.PostAsync(url, content);
-            var responseContent = await response.Content.ReadAsStringAsync();
-            //var result = JsonConvert.DeserializeObject<CreateProductDto>(responseContent);
-
+            await response.Content.ReadAsStringAsync();
             return RedirectToAction("Index", "Products");
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int id)
         {
             var resp = await httpClient.GetStringAsync("manufacturers/GetCategories");
             var manufacturers = JsonConvert.DeserializeObject<List<ManufacturerDto>>(resp);
@@ -136,25 +149,40 @@ namespace Client.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CreateProductDto productDto)
         {
             var url = "https://localhost:7186/api/products/Update";
-            var content = new MultipartFormDataContent();
-
-            content.Add(new StringContent(productDto.ProductID), "ProductID");
-            content.Add(new StringContent(productDto.ProductName), "ProductName");
-            content.Add(new StringContent(productDto.ProductDescription), "ProductDescription");
-            content.Add(new StringContent(productDto.ProductPrice.ToString()), "ProductPrice");
-            content.Add(new StringContent(productDto.Quantity.ToString()), "Quantity");
-            content.Add(new StringContent(productDto.CreateOn.ToString("dd/MM/yyyy")), "CreateOn");
-            content.Add(new StreamContent(productDto.ProductImage.OpenReadStream()), "ProductImage", productDto.ProductImage.FileName);
-            content.Add(new StringContent(productDto.ManufacturerID), "ManufacturerID");
+            var content = new MultipartFormDataContent
+            {
+                { new StringContent(productDto.ProductID.ToString()), "ProductID" },
+                { new StringContent(productDto.ProductName), "ProductName" },
+                { new StringContent(productDto.ProductDescription), "ProductDescription" },
+                { new StringContent(productDto.ProductPrice.ToString()), "ProductPrice" },
+                { new StringContent(productDto.Quantity.ToString()), "Quantity" },
+                { new StringContent(productDto.CreateOn.ToString("dd/MM/yyyy")), "CreateOn" },
+                { new StreamContent(productDto.ProductImage.OpenReadStream()), "ProductImage", productDto.ProductImage.FileName },
+                { new StringContent(productDto.ManufacturerID), "ManufacturerID" }
+            };
 
             var response = await httpClient.PutAsync(url, content);
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<CreateProductDto>(responseContent);
-
+            await response.Content.ReadAsStringAsync();
             return RedirectToAction("Index", "Products");
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var res = await httpClient.GetStringAsync("products/GetSingleByID?id=" + id);
+            var productDTO = JsonConvert.DeserializeObject<Product>(res);
+            return View(productDTO);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await httpClient.DeleteAsync("products/Delete?id=" + id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

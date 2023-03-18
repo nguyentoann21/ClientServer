@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Client.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <header>
@@ -36,6 +37,17 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-route-id="BR" asp-area="" asp-controller="Products" asp-action="ProductBy">Bear Rich</a>
+                        </li>
+                        <li>
+                            <div>
+                                <form asp-controller="Products" asp-action="SearchByName" method="get" asp-route-id="name">
+                                    <div class="form-group">
+                                        <label for="search-name">Search by Name:</label>
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="Enter product name">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </form>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>

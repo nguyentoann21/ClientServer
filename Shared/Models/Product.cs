@@ -6,8 +6,9 @@ namespace Shared.Models
     public class Product
     {
         [Key]
-        [StringLength(100, ErrorMessage = "Enter limit 100 characters")]
-        public string ProductID { get; set; } = string.Empty;
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Range(1, int.MaxValue)]
+        public int ProductID { get; set; }
         [Required]
         [StringLength(100, ErrorMessage = "Enter limit 100 characters")]
         public string ProductName { get; set; } = string.Empty;

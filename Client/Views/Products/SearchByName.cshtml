@@ -5,16 +5,6 @@
 }
 
 <div>
-    <form asp-controller="Products" asp-action="SearchByName" method="get" asp-route-id="name">
-        <div class="form-group">
-            <label for="search-name">Search by Name:</label>
-            <input type="text" class="form-control" name="name" id="name" placeholder="Enter product name">
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-</div>
-
-<div>
     <h3>@ViewBag.Message</h3>
 </div>
 

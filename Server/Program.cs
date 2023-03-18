@@ -53,7 +53,6 @@ namespace Server
             builder.Services.AddDbContext<AppDbContext>();
             builder.Services.AddScoped<ICaregoryServices, CategoryServices>();
             builder.Services.AddScoped<IProductServices, ProductServices>();
-            builder.Services.AddScoped<ICartServices, CartServices>();
 
 
             AppDbContext db = new();

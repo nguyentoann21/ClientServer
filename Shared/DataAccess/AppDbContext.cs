@@ -11,7 +11,7 @@ namespace Shared.DataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=123456;Database=ShoppingStore;Trusted_Connection=true;Encrypt=false");
+            optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=123456;Database=Stores;Trusted_Connection=true;Encrypt=false");
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
 
@@ -30,7 +30,7 @@ namespace Shared.DataAccess
             modelBuilder.Entity<Product>().HasKey(p => p.ProductID);
             modelBuilder.Entity<Product>().HasData(
                 new Product { 
-                    ProductID = "OP001",
+                    ProductID = 1,
                     ProductName = "Luffy Gear 3",
                     ProductDescription = "The toys of Luffy Gear 3",
                     ProductPrice = 120000,
@@ -41,7 +41,7 @@ namespace Shared.DataAccess
                 },
                 new Product
                 {
-                    ProductID = "DRB001",
+                    ProductID = 2,
                     ProductName = "Son Goku",
                     ProductDescription = "The toys of Son Goku",
                     ProductPrice = 150000,
@@ -52,7 +52,7 @@ namespace Shared.DataAccess
                 },
                 new Product
                 {
-                    ProductID = "PO001",
+                    ProductID = 3,
                     ProductName = "Pikachu",
                     ProductDescription = "The toys of Pikachu",
                     ProductPrice = 125000,
@@ -63,7 +63,7 @@ namespace Shared.DataAccess
                 },
                 new Product
                 {
-                    ProductID = "AD001",
+                    ProductID = 4,
                     ProductName = "Superman",
                     ProductDescription = "The toys of Superman",
                     ProductPrice = 100000,

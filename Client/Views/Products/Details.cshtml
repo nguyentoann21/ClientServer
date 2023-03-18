@@ -14,8 +14,8 @@
             <p>@Model.ProductDescription</p>
             <p>@Model.ProductPrice.ToString("c")</p>
             <p>@Model.Manufacturers.ManufacturerName</p>
-            <form method="post" action="@Url.Action("AddToCart", "Cart")">
-                <input type="hidden" name="productId" value="@Model.ProductID''" />
+            <form method="post" asp-action="AddToCart" asp-controller="Cart" asp-route-id="@Model.ProductID" asp-route-quantity="quantity">
+                <input type="hidden" name="productId" value="@Model.ProductID" />
                 <div class="form-group">
                     <label for="quantity">Quantity:</label>
                     <input type="number" class="form-control" name="quantity" value="1" min="1" />

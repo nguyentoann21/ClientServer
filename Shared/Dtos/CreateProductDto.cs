@@ -6,7 +6,7 @@ namespace Shared.Dtos
 {
     public class CreateProductDto
     {
-        public string ProductID { get; set; }
+        public int ProductID { get; set; }
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
         public Decimal ProductPrice { get; set; }

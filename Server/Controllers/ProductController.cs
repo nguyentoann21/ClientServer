@@ -18,14 +18,14 @@ namespace Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProducts(int numberPage, int numberSize)
+        public async Task<IActionResult> GetProducts()
         {
             var products = await _services.GetAll(1, 10);            
             return Ok(products);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSingleByID(string? id)
+        public async Task<IActionResult> GetSingleByID(int id)
         {
             var product = await _services.GetSingleByID(id);
             if (product == null)
@@ -46,7 +46,6 @@ namespace Server.Controllers
             }
             var product = new Product
             {
-                ProductID = productDto.ProductID,
                 ProductName = productDto.ProductName,
                 ProductDescription = productDto.ProductDescription,
                 ProductPrice = productDto.ProductPrice,
@@ -55,7 +54,7 @@ namespace Server.Controllers
                 ProductImage = await Utils.Upload(productDto.ProductImage),
                 ManufacturerID = productDto.ManufacturerID,
             };
-            var result = await _services.Create(product);
+            await _services.Create(product);
             return Ok(productDto);
         }
 
@@ -78,12 +77,12 @@ namespace Server.Controllers
                 ProductImage = await Utils.Upload(productDto.ProductImage),
                 ManufacturerID = productDto.ManufacturerID,
             };
-            var result = await _services.Update(product);
+            await _services.Update(product);
             return Ok(product);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
             var category = await _services.GetSingleByID(id);
             if (category == null)
