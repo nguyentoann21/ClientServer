@@ -1,0 +1,38 @@
+﻿@model Shared.Models.SignIn
+
+@{
+    var checkLogin = ViewData["checklogin"];
+}
+<div id="content">
+    <div id="form">
+        <div id="form-title">
+            <span><a href="/Account/Signin" style="color: red;">SIGN IN</a></span>
+            <span><a asp-controller="Account" asp-action="SignUp">SIGN UP</a></span>
+        </div>
+        <div id="form-content">
+            @using (Html.BeginForm("CheckSignIn", "Account", FormMethod.Post))
+            {
+                <div>
+                    <label asp-for="Email">Email<span style="color: red;">*</span></label><br />
+
+                    @Html.TextBoxFor(x=>x.Email)
+                    <span style="color: red;">@Html.ValidationMessageFor(x => x.Email)</span>
+                </div>
+                <div>
+                    <label asp-for="Password">Password<span style="color: red;">*</span></label><br />
+
+                    @Html.PasswordFor(x=>x.Password)
+                    <span style="color: red;">@Html.ValidationMessageFor(x => x.Password)</span>
+                </div>
+                @if (ViewBag.Mess == "1")
+                {
+                    <span style="color: red;"><p>Login Failed. Check your account</p></span>
+                }
+
+                <input type="submit" value="SIGN IN" />
+
+
+            }
+        </div>
+    </div>
+</div>

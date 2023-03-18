@@ -1,0 +1,58 @@
+﻿
+@model Shared.Models.SignUp
+<div id="form">
+    <div id="form-title">
+        <span><a asp-controller="Account" asp-action="SignUp">SIGN UP</a></span>
+        <span><a href="/Account/Signin" style="color: red;">SIGN IN</a></span>
+    </div>
+    <div id="form-content">
+
+        @if (ViewBag.Mess == "1")
+        {
+                <span style="color: red"st><p>
+                    Signup unsuccessfully
+                </p></span>
+        }
+        else if (ViewBag.Mess == "2")
+        {
+                <p>
+                    Password and Repassword is different
+                </p>
+        }
+        @using (Html.BeginForm("SignupAccount", "Account", FormMethod.Post))
+        {
+                <div>
+                    <div>
+                        @Html.LabelFor(x => x.Email)
+                        @Html.TextBoxFor(x => x.Email)
+                        <span style="color: red;">@Html.ValidationMessageFor(x => x.Email)</span>
+                    </div>
+                    <div>
+                        @Html.LabelFor(x => x.Password)
+                        @*@Html.TextBoxFor(x => x.Password)*@
+                        <input asp-for="Password" type="password" />
+                        <span style="color: red;">@Html.ValidationMessageFor(x => x.Password)</span>
+                    </div>
+                    <div>
+                    @Html.LabelFor(x => x.FullName)
+                    @Html.TextBoxFor(x => x.FullName)
+                        <span style="color: red;">@Html.ValidationMessageFor(x => x.FullName)</span>
+                    </div>
+                    <div>
+                    @Html.LabelFor(x => x.PhoneNumber)
+                    @Html.TextBoxFor(x => x.PhoneNumber)
+                    <span style="color: red;">@Html.ValidationMessageFor(x => x.PhoneNumber)</span>
+                    </div>
+                    <div>
+                    @Html.LabelFor(x => x.Address)
+                    @Html.TextBoxFor(x => x.Address)
+                        <span style="color: red;">@Html.ValidationMessageFor(x => x.Address)</span>
+                    </div>
+
+                    <div>
+                        <input type="submit" value="Save" />
+                    </div>
+                </div>
+        }
+    </div>
+</div>
