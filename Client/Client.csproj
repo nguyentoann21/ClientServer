@@ -7,6 +7,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Views\Account\ChangePasswords.cshtml" />
+    <None Include="Views\Account\Index.cshtml" />
+    <None Include="Views\Account\SignIn.cshtml" />
+    <None Include="Views\Account\SignUp.cshtml" />
+    <None Include="Views\Admin\Create.cshtml" />
+    <None Include="Views\Admin\Delete.cshtml" />
+    <None Include="Views\Admin\Edit.cshtml" />
+    <None Include="Views\Admin\Index.cshtml" />
+    <None Include="Views\Admin\SearchByName.cshtml" />
+    <None Include="Views\Cart\AddToCart.cshtml" />
+    <None Include="Views\Cart\Index.cshtml" />
+    <None Include="Views\Home\Categories.cshtml" />
+    <None Include="Views\Home\Details.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\SearchByName.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4">
       <PrivateAssets>all</PrivateAssets>

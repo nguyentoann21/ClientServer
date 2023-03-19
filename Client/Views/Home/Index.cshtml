@@ -39,27 +39,62 @@
             </div>
         </div>
         <div style="display: flex; width: 20%">
-            <button type="submit" 
-                style="background-color: lightgreen; 
+            @if (Context.Session.GetString("user") == null)
+            {
+                <a asp-action="SignIn" asp-controller="Account">
+                    <button type="submit"
+                        style="background-color: lightgreen;
                        margin-right: 5px;
                        color: #000;
                        font-size: 18px;
                        font-weight: bold;
-                       border: 0px solid; 
+                       border: 0px solid;
                        border-radius: 10px;
                        padding: 5px 10px">
-                Sign In
-            </button>
-            <button type="submit" 
-                style="background-color: orangered; 
+                        Sign In
+                    </button>
+                </a>
+                <a asp-action="SignUp" asp-controller="Account">
+                    <button type="submit"
+                        style="background-color: orangered;
                        color: #fff;
                        font-size: 18px;
                        border: 0px solid;
                        border-radius: 10px;
                        font-weight: bold;
                        padding: 5px 10px">
-                Sign Up
-            </button>
+                        Sign Up
+                    </button>
+                </a>
+            }
+            else
+            {
+                <a asp-action="ChangePasswords" asp-controller="Account">
+                    <button type="submit"
+                        style="background-color: lightgreen;
+                       margin-right: 5px;
+                       color: #000;
+                       font-size: 18px;
+                       font-weight: bold;
+                       border: 0px solid;
+                       border-radius: 10px;
+                       padding: 5px 10px">
+                        @Context.Session.GetString("user")
+                    </button>
+                </a>
+                <a asp-action="Logout" asp-controller="Account">
+                    <button type="submit"
+                        style="background-color: orangered;
+                       color: #fff;
+                       font-size: 18px;
+                       border: 0px solid;
+                       border-radius: 10px;
+                       font-weight: bold;
+                       padding: 5px 10px">
+                        <i class="fas fa-sign-out-alt style=" font-size:40px;color:blue;float:right;""></i>
+                    </button>
+                </a>
+            }
         </div>
     </nav>
 </header>

@@ -1,9 +1,13 @@
-﻿namespace Shared.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Shared.Models
 {
     public class Role
     {
-        public string RoleID { get; set; }
-        public string RoleName { get; set; }
-        public ICollection<User> Users { get; set; }
+        [Key]
+        public string RoleId { get; set; } = string.Empty;
+        [Required]
+        public string RoleName { get; set; } = string.Empty;
+        public ICollection<Account> Accounts { get; set; } = new HashSet<Account>();
     }
 }

@@ -7,7 +7,23 @@
 <div>
     <h1 style="text-align: center; font-size: 42px; font-weight: bold; color: #016848">Admin Dashboard</h1>
 </div>
-
+<div style="display:flex; justify-content:end">
+    <a asp-action="ChangePasswords" asp-controller="Account">
+    <button type="submit"
+            style="background-color: lightgreen;
+                       margin-right: 5px;
+                       color: #000;
+                       font-size: 18px;
+                       font-weight: bold;
+                       border: 0px solid;
+                       border-radius: 10px;
+                       padding: 5px 10px;
+                        float:right">
+        @Context.Session.GetString("user")
+    </button>
+    </a>
+    <a asp-action="Logout" asp-controller="Account"><i class="fas fa-sign-out-alt" style="font-size:40px;color:blue;float:right;"></i></a>
+</div>
 <div class="search-forms">
     <form class="search-containers" asp-controller="Admin" asp-action="SearchByName" method="get" asp-route-id="name">
         <div class="form-group">
@@ -18,9 +34,11 @@
 </div>
 
 <div>
+    
     <a asp-action="Create" asp-controller="Admin">
         <i class='fas fa-first-aid' style="font-size: 30px"></i>
     </a>
+    
 </div>
 
 <div>

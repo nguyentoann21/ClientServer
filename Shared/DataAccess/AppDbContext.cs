@@ -7,7 +7,8 @@ namespace Shared.DataAccess
     {
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<Product> Products { get; set; }
-
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Role> Roles { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -26,7 +27,33 @@ namespace Shared.DataAccess
                 new Manufacturer { ManufacturerID = "AD", ManufacturerName = "Marvel" },
                 new Manufacturer { ManufacturerID = "BR", ManufacturerName = "Bear Brick" }
                 );
+            modelBuilder.Entity<Role>().HasData(
+                new Role { RoleId = "AD", RoleName = "Administrator" },
+                new Role { RoleId = "CUS", RoleName = "Customer" }
 
+                );
+            modelBuilder.Entity<Account>().HasData(
+                new Account
+                {
+                    AccountID = 1,
+                    Email = "tranthanhliem@gmail.com",
+                    Password = "123456",
+                    Address = "CanTho",
+                    FullName = "Tran Thanh Liem",
+                    PhoneNumber = "0123456789",
+                    RoleID = "AD"
+                },
+                new Account
+                {
+                    AccountID = 2,
+                    Email = "tranthanhliem1@gmail.com",
+                    Password = "123456",
+                    Address = "CanTho",
+                    FullName = "Tran Thanh Liem",
+                    PhoneNumber = "0123456789",
+                    RoleID = "CUS"
+                }
+                );
             modelBuilder.Entity<Product>().HasKey(p => p.ProductID);
             modelBuilder.Entity<Product>().HasData(
                 new Product
