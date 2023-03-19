@@ -93,7 +93,7 @@ namespace Client.Controllers
                     HttpContext.Session.SetString("user", account.Email);
                     HttpContext.Session.SetString("role", useAccount.RoleID.ToString());
                     //HttpContext.Session.SetString("userId", useAccount.AccountID.ToString());
-                    //HttpContext.Session.SetString("userAccount", JsonSerializer.Serialize(useAccount));
+                    HttpContext.Session.SetString("userAccount", JsonSerializer.Serialize(useAccount));
 
                     if (useAccount.RoleID == "AD")
                     {
