@@ -1,32 +1,80 @@
 ﻿using Client.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Shared.Models;
+using Shared.PageView;
 using System.Diagnostics;
 
 namespace Client.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly HttpClient httpClient;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController()
         {
-            _logger = logger;
+            httpClient = new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:7186/api/")
+            };
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var res = await httpClient.GetStringAsync("products/GetProducts");
+            var productDTO = JsonConvert.DeserializeObject<List<Product>>(res);
+            var model = new ProductPageView
+            {
+                Products = productDTO
+            };
+
+            return View(model);
         }
 
-        public IActionResult Privacy()
+        [HttpGet("id")]
+        public async Task<IActionResult> Categories(string id)
         {
-            return View();
+            var res = await httpClient.GetStringAsync("products/GetProductByManufacturer?manufacturer=" + id);
+            var productDTO = JsonConvert.DeserializeObject<List<Product>>(res);
+            var view = new ProductByView
+            {
+                Products = productDTO
+            };
+            ViewBag.Total = "This manufacturer have " + productDTO.Count + " items(s)";
+            return View(view);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public async Task<IActionResult> SearchByName(string name)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (name == null)
+            {
+                var res = await httpClient.GetStringAsync("products/GetProducts");
+                var rs = JsonConvert.DeserializeObject<List<Product>>(res);
+
+                var products = new ProductByView
+                {
+                    Products = rs
+                };
+                ViewBag.Message = "Found " + rs.Count + " item(s)";
+                return View(products);
+
+            }
+            var response = await httpClient.GetStringAsync("products/SearchByName/name?name=" + name);
+            var result = JsonConvert.DeserializeObject<List<Product>>(response);
+
+            var view = new ProductByView
+            {
+                Products = result
+            };
+            ViewBag.Message = "Found " + result.Count + " item(s)";
+            return View(view);
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            var res = await httpClient.GetStringAsync("products/GetSingleByID?id=" + id);
+            var productDTO = JsonConvert.DeserializeObject<Product>(res);
+            return View(productDTO);
         }
     }
 }

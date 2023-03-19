@@ -1,0 +1,65 @@
+﻿@model Shared.PageView.ProductPageView
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div>
+    <h1 style="text-align: center; font-size: 42px; font-weight: bold; color: #016848">Admin Dashboard</h1>
+</div>
+
+<div class="search-forms">
+    <form class="search-containers" asp-controller="Admin" asp-action="SearchByName" method="get" asp-route-id="name">
+        <div class="form-group">
+            <input type="text" class="form-control search-input" name="name" id="name" placeholder="Search by product name">
+        </div>
+        <button type="submit" class="btn btn-primary search-button">Search</button>
+    </form>
+</div>
+
+<div>
+    <a asp-action="Create" asp-controller="Admin">
+        <i class='fas fa-first-aid' style="font-size: 30px"></i>
+    </a>
+</div>
+
+<div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>UnitPrice</th>
+                <th>Quantity</th>
+                <th>Created Date</th>
+                <th>Manage</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var product in Model.Products)
+        { 
+            <tr>
+                <td>
+                    <img src="@product.ProductImage" width="70" height="70" />
+                </td>
+                <td class="items-table-text">@product.ProductName</td>
+                <td class="items-table-text">@product.ProductDescription</td>
+                <td class="items-table-text">@product.ProductPrice.ToString("c")</td>
+                <td class="items-table-text">@product.Quantity</td>
+                <td class="items-table-text">@product.CreateOn</td>
+                <td>
+                    <div class="btn-group">
+                        <a href="@Url.Action("Edit", "Admin", new { id = product.ProductID })" class="btn btn-sm btn-outline-secondary">
+                            <i class='fas fa-edit'></i>
+                        </a>
+                        <a href="@Url.Action("Delete", "Admin", new { id = product.ProductID })" class="btn btn-sm btn-outline-secondary">
+                            <i class='fas fa-trash-alt'></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

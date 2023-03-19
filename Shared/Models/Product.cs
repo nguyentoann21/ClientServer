@@ -13,14 +13,13 @@ namespace Shared.Models
         [StringLength(100, ErrorMessage = "Enter limit 100 characters")]
         public string ProductName { get; set; } = string.Empty;
         [Required]
-        [StringLength(200, ErrorMessage = "Enter limit 200 characters")]
         public string ProductDescription { get; set; } = string.Empty;
         [Required]
         public Decimal ProductPrice { get; set; }
         [Required]
         public Int32 Quantity { get; set; }
         [Required]
-        [DisplayFormat(DataFormatString = "{0:đd/MM/yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime CreateOn { get; set; }
         public string ProductImage { get; set; } = string.Empty;
 

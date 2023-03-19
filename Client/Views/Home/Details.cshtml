@@ -1,4 +1,8 @@
-﻿@model List<Shared.Models.Product>
+﻿@model Shared.Models.Product
+
+@{
+    ViewData["Title"] = "Product";
+}
 
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -60,56 +64,32 @@
     </nav>
 </header>
 
-<a asp-action="Index" asp-controller="Home">
-    <div class="btn btn-primary" style="justify-content: center; font-size: 16px; font-weight: 600">
-        Buy More
+<div class="items-de">
+    <div class="items-left">
+        <img src="@Model.ProductImage" alt="@Model.ProductName" class="items-image-view" />
     </div>
-</a>
+    <div class="items-right">
+        <h1 class="items-name">@Model.ProductName</h1>
+        <p class="items-description">@Model.ProductDescription</p>
+        <p class="items-price">@Model.ProductPrice.ToString("c")</p>
+        <p class="items-type">@Model.Manufacturers.ManufacturerName</p>
+        <form method="post" asp-action="AddToCart" asp-controller="Cart" asp-route-id="@Model.ProductID" asp-route-quantity="quantity">
+            <input type="hidden" name="productId" value="@Model.ProductID" />
+            <div class="form-group">
+                <label for="quantity">Quantity:</label>
+                <input type="number" class="form-control" name="quantity" value="1" min="1" />
+            </div>
+            <div style="display:flex; margin-top: 10px">
+                <button style="margin-right: 5px" type="submit" class="btn btn-primary">
+                    <i style="font-size: 30px; padding: 0 5px !important" class="fa fa-shopping-cart"></i>
+                </button>
+                <a asp-action="Index" asp-controller="Home">
+                    <div class="btn btn-warning" style="justify-content: center">
+                        <i style="font-size: 30px; padding: 0 10px !important" class="fa fa-arrow-left"></i>
+                    </div>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
 
-@if(Model.Count > 0){
-    <h2>Have @Model.Count item(s) in your Cart</h2>
-    <div class="items-carts">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>UnitPrice</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                    <th>Remove</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var product in Model)
-                {
-                    <tr>
-                        <td>
-                            <img src="@product.ProductImage" width="70" height="70" />
-                        </td>
-                        <td class="items-table-text">@product.ProductName</td>
-                        <td class="items-table-text">@product.ProductDescription</td>
-                        <td class="items-table-text">@product.ProductPrice</td>
-                        <td class="items-table-text">@product.Quantity</td>
-                        <td class="items-table-text">@(@product.ProductPrice * @product.Quantity)</td>
-                        <td>
-                            <form method="post" asp-route-productId="@product.ProductID" asp-action="RemoveProduct" asp-controller="Cart">
-                                <input type="hidden" name="productId" value="@product.ProductID" />
-                                <span>
-                                    <button type="submit">
-                                        <i class="fa fa-trash" style="color:red"></i>
-                                    </button>
-                                </span>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}else{
-    <h3>
-        No item(s) in your Cart
-    </h3>
-}
