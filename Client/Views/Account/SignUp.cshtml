@@ -1,9 +1,11 @@
 ﻿
 @model Shared.Models.SignUp
+@{
+    Layout = null;
+}
 <div id="form">
     <div id="form-title">
-        <span><a asp-controller="Account" asp-action="SignUp">SIGN UP</a></span>
-        <span><a href="/Account/Signin" style="color: red;">SIGN IN</a></span>
+        <span><a href="#" style="color:red;">SIGN UP</a></span>
     </div>
     <div id="form-content">
 
@@ -17,42 +19,48 @@
         {
                 <p>
                     Password and Repassword is different
-                </p>
+            </p>
+        }
+        else if (ViewBag.Mess == "3")
+        {
+            <p>Email is required</p>
         }
         @using (Html.BeginForm("SignupAccount", "Account", FormMethod.Post))
         {
                 <div>
                     <div>
                         @Html.LabelFor(x => x.Email)
-                        @Html.TextBoxFor(x => x.Email)
+                        <input asp-for="Email" type="text" required/>
                         <span style="color: red;">@Html.ValidationMessageFor(x => x.Email)</span>
                     </div>
                     <div>
                         @Html.LabelFor(x => x.Password)
                         @*@Html.TextBoxFor(x => x.Password)*@
-                        <input asp-for="Password" type="password" />
+                        <input asp-for="Password" type="password" required/>
                         <span style="color: red;">@Html.ValidationMessageFor(x => x.Password)</span>
                     </div>
                     <div>
                     @Html.LabelFor(x => x.FullName)
-                    @Html.TextBoxFor(x => x.FullName)
+                    <input asp-for="FullName" type="text" required />
                         <span style="color: red;">@Html.ValidationMessageFor(x => x.FullName)</span>
                     </div>
                     <div>
                     @Html.LabelFor(x => x.PhoneNumber)
-                    @Html.TextBoxFor(x => x.PhoneNumber)
+                    <input asp-for="PhoneNumber" type="text" required />
                     <span style="color: red;">@Html.ValidationMessageFor(x => x.PhoneNumber)</span>
                     </div>
                     <div>
                     @Html.LabelFor(x => x.Address)
-                    @Html.TextBoxFor(x => x.Address)
+                    <input asp-for="Address" type="text" required />
                         <span style="color: red;">@Html.ValidationMessageFor(x => x.Address)</span>
                     </div>
 
                     <div>
                         <input type="submit" value="Save" />
+                    <a href="/Products/Index"><input type="button" value="Back" style="background-color:#0d6efd !important;" /></a>
                     </div>
                 </div>
         }
     </div>
 </div>
+<link rel="stylesheet" href="~/css/signup.css" asp-append-version="true" />

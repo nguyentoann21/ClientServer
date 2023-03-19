@@ -16,7 +16,7 @@
                 <a asp-area="" asp-controller="Products" asp-action="Index">
                     <img src="https://img.freepik.com/free-vector/font-design-word-toy-shop-with-many-toys_1308-42318.jpg" width="120" height="80" alt="Home" />
                     </a>
-                <a class="navbar-brand" asp-area="" asp-controller="Products" asp-action="Index">Home</a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -49,11 +49,24 @@
                                 </form>
                             </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
-                        </li>
+                        @if(Context.Session.GetString("role")=="CUS"){
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
+                            </li>
+                        }
                     </ul>
                 </div>
+
+                @if (Context.Session.GetString("user") == null)
+                {
+                    <a asp-controller="Account" asp-action="signin" style="right:10px; margin-right:10px;" class="btn btn-primary">SignIn</a>
+                    <a asp-controller="Account" asp-action="signup" style="right:10px" class="btn btn-primary">SignUp</a>
+                }
+                else if (Context.Session.GetString("user") != null)
+                {
+                    <a asp-action="Logout" asp-controller="Account" class="btn btn-primary">Logout</a>
+                    <span><a href="/Account/ChangePassword" class="btn btn-danger" style="margin-left:10px; color:white !important;">Change Password</a></span>
+                }
             </div>
         </nav>
     </header>

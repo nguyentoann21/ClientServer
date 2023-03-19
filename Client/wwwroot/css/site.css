@@ -20,7 +20,7 @@ html {
 body {
   margin-bottom: 60px;
 }
-* {
+/** {
     margin: 0px;
     padding: 0px;
     font-size: 16px;
@@ -228,9 +228,9 @@ body {
     border-top: 1px solid sienna;
     line-height: 50px;
     text-align: center;
-}
+}*/
 /* SIGN IN form */
-#form {
+/*#form {
     margin: 50px auto;
     width: 60%;
     background-color: #fff;
@@ -416,10 +416,10 @@ body {
     font-size: 20px;
     line-height: 25px;
     border-bottom: 1px solid gainsboro;
-}
+}*/
 
 /* Shopping cart */
-#cart {
+/*#cart {
     margin: 25px auto;
     width: 80%;
     background-color: #fff;
@@ -816,4 +816,4 @@ body {
     display: grid;
     grid-template-columns: auto auto auto auto;
     grid-gap: 10px;
-}
+}*/

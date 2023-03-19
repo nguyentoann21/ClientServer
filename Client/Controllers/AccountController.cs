@@ -8,6 +8,8 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using Microsoft.IdentityModel.Tokens;
+
 namespace Client.Controllers
 {
     public class AccountController : Controller
@@ -38,7 +40,7 @@ namespace Client.Controllers
                     using (var client = new HttpClient())
                     {
                         var accountUse = HttpContext.Session.GetString("user");
-                        var url = "http://localhost:1817/api/accounts/GetAccountByEmail/" + accountUse;
+                        var url = "https://localhost:7186/api/accounts/GetAccountByEmail/" + accountUse;
                         var result = await client.GetAsync(url);
 
                         if (result.IsSuccessStatusCode)
@@ -79,8 +81,8 @@ namespace Client.Controllers
             AccCusDTO useAccount = null;
             using (var client = new HttpClient())
             {
-                HttpResponseMessage response = client.PostAsync("http://localhost:1817/api/accounts/login", content).Result;
-                var url = "http://localhost:1817/api/accounts/GetAccountByEmail/" + account.Email;
+                HttpResponseMessage response = client.PostAsync("https://localhost:7186/api/accounts/login", content).Result;
+                var url = "https://localhost:7186/api/accounts/GetAccountByEmail/" + account.Email;
                 var result = await client.GetAsync(url);
 
                 if (response.IsSuccessStatusCode)
@@ -97,7 +99,7 @@ namespace Client.Controllers
                     {
                         return Redirect("/Products/Index");
                     }
-                    return Redirect("/Account/Index");
+                    return Redirect("/Products/Index");
 
                 }
                 else
@@ -116,7 +118,7 @@ namespace Client.Controllers
             HttpContext.Session.Remove("user");
             HttpContext.Session.Remove("role");
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Products");
         }
         public IActionResult SignUp()
         {
@@ -128,7 +130,7 @@ namespace Client.Controllers
             List<Account> accounts = await GetAllAccounts();
             foreach (var account in accounts)
             {
-                if (customer.Email.Trim().ToLower().Equals(account.Email.Trim().ToLower()))
+                if (customer.Email.Equals(account.Email))
                 {
                     ViewBag.Mess = "1";
                     return View("SignUp");
@@ -156,7 +158,7 @@ namespace Client.Controllers
             string apiResponse = "";
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.PostAsJsonAsync<AccCusDTO>("http://localhost:1817/api/accounts/Register", customer))
+                using (var response = await httpClient.PostAsJsonAsync<AccCusDTO>("https://localhost:7186/api/accounts/Register", customer))
                 {
                     apiResponse = await response.Content.ReadAsStringAsync();
                 }
@@ -169,7 +171,7 @@ namespace Client.Controllers
             List<Account> accounts = new List<Account>();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("http://localhost:1817/api/accounts/GetAllAccounts"))
+                using (var response = await httpClient.GetAsync("https://localhost:7186/api/accounts/GetAllAccounts"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     accounts = JsonConvert.DeserializeObject<List<Account>>(apiResponse);
@@ -208,7 +210,7 @@ namespace Client.Controllers
             });
             
             
-            return View("Index");
+            return RedirectToAction("Index", "Products");
         }
         [HttpPut]
         public async Task ChangePasswordAction(ChangePassword changePassword)
@@ -216,7 +218,7 @@ namespace Client.Controllers
             string apiRespose = "";
             using(var httpClient =new HttpClient())
             {
-                using(var response=await httpClient.PutAsJsonAsync<ChangePassword>("http://localhost:1817/api/accounts/changePassword", changePassword))
+                using(var response=await httpClient.PutAsJsonAsync<ChangePassword>("https://localhost:7186/api/accounts/changePassword", changePassword))
                 {
                     apiRespose = await response.Content.ReadAsStringAsync();
                 }
