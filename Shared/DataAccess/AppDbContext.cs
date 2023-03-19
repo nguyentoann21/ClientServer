@@ -11,7 +11,7 @@ namespace Shared.DataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=123456;Database=ToysStore;Trusted_Connection=true;Encrypt=false");
+            optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=123456;Database=ToyStores;Trusted_Connection=true;Encrypt=false");
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
 
@@ -22,9 +22,9 @@ namespace Shared.DataAccess
             modelBuilder.Entity<Manufacturer>().HasData(
                 new Manufacturer { ManufacturerID = "OP", ManufacturerName = "Once Piece" },
                 new Manufacturer { ManufacturerID = "DRB", ManufacturerName = "Dragon Ball" },
-                new Manufacturer { ManufacturerID = "PO", ManufacturerName = "Pokemon" },
-                new Manufacturer { ManufacturerID = "AD", ManufacturerName = "Adventure" },
-                new Manufacturer { ManufacturerID = "BR", ManufacturerName = "Bear Rich" }
+                new Manufacturer { ManufacturerID = "PO", ManufacturerName = "Pokémon" },
+                new Manufacturer { ManufacturerID = "AD", ManufacturerName = "Marvel" },
+                new Manufacturer { ManufacturerID = "BR", ManufacturerName = "Bear Brick" }
                 );
 
             modelBuilder.Entity<Product>().HasKey(p => p.ProductID);

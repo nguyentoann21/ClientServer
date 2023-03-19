@@ -83,7 +83,7 @@ namespace Client.Controllers
 
             var response = await httpClient.PostAsync(url, content);
             await response.Content.ReadAsStringAsync();
-            return RedirectToAction("Index", "Products");
+            return RedirectToAction("Index", "Admin");
         }
 
         [HttpGet]
@@ -116,7 +116,7 @@ namespace Client.Controllers
 
             var response = await httpClient.PutAsync(url, content);
             await response.Content.ReadAsStringAsync();
-            return RedirectToAction("Index", "Products");
+            return RedirectToAction("Index", "Admin");
         }
 
         public async Task<IActionResult> Delete(int id)
