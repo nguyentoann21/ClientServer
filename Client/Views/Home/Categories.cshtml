@@ -1,4 +1,8 @@
-﻿@model List<Shared.Models.Product>
+﻿@model Shared.PageView.ProductByView
+
+@{
+    ViewData["Title"] = "Product by Manufacturer";
+}
 
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -60,56 +64,31 @@
     </nav>
 </header>
 
-<a asp-action="Index" asp-controller="Home">
-    <div class="btn btn-primary" style="justify-content: center; font-size: 16px; font-weight: 600">
-        Buy More
-    </div>
-</a>
-
-@if(Model.Count > 0){
-    <h2>Have @Model.Count item(s) in your Cart</h2>
-    <div class="items-carts">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>UnitPrice</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                    <th>Remove</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var product in Model)
-                {
-                    <tr>
-                        <td>
-                            <img src="@product.ProductImage" width="70" height="70" />
-                        </td>
-                        <td class="items-table-text">@product.ProductName</td>
-                        <td class="items-table-text">@product.ProductDescription</td>
-                        <td class="items-table-text">@product.ProductPrice</td>
-                        <td class="items-table-text">@product.Quantity</td>
-                        <td class="items-table-text">@(@product.ProductPrice * @product.Quantity)</td>
-                        <td>
-                            <form method="post" asp-route-productId="@product.ProductID" asp-action="RemoveProduct" asp-controller="Cart">
-                                <input type="hidden" name="productId" value="@product.ProductID" />
-                                <span>
-                                    <button type="submit">
-                                        <i class="fa fa-trash" style="color:red"></i>
-                                    </button>
-                                </span>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}else{
+<div>
     <h3>
-        No item(s) in your Cart
+        @ViewBag.Total
     </h3>
-}
+</div>
+
+<div class="row">
+    @foreach (var product in Model.Products)
+    {
+        <div class="col-md-3">
+            <div class="card mb-4 shadow-sm items-li-view">
+                <img src="@product.ProductImage" class="card-img-top items-image-view" alt="@product.ProductName">
+                <div class="card-body">
+                    <h4 class="card-title items-name">@product.ProductName</h4>
+                    <p class="card-text items-description">@product.ProductDescription</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a href="@Url.Action("Details", "Home", new { id = product.ProductID })" class="btn btn-sm btn-outline-secondary">
+                                <i class="fa fa-search w3-padding w3-text-red"></i>
+                            </a>
+                        </div>
+                        <p class="text-muted items-price">@product.ProductPrice.ToString("c")</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

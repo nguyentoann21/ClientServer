@@ -12,7 +12,16 @@ namespace Client.Controllers
         [HttpPost]
         public async Task<ActionResult> AddToCart(string productId, int quantity)
         {
-            
+            var http = new HttpClient();
+            var res =  await http.GetStringAsync($"https://localhost:7186/api/products/GetSingleByID?id="+productId);
+
+            var result = JsonConvert.DeserializeObject<Product>(res);
+            if (result.Quantity < quantity)
+            {
+                ModelState.AddModelError("", "This product not enough quantity for you.");
+                return View();
+            }
+
             var client = new HttpClient();
 
             var response = await client.PostAsync($"https://localhost:7186/api/carts/AddToCart?productId="+productId+"&quantity="+quantity, null);

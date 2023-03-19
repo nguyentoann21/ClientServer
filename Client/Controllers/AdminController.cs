@@ -1,22 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using Server;
 using Shared.Dtos;
 using Shared.Models;
 using Shared.PageView;
-using System.Drawing;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 
 namespace Client.Controllers
 {
-    public class ProductsController : Controller
+    public class AdminController : Controller
     {
         private readonly HttpClient httpClient;
 
-        public ProductsController()
+        public AdminController()
         {
             httpClient = new HttpClient
             {
@@ -30,60 +25,15 @@ namespace Client.Controllers
             var productDTO = JsonConvert.DeserializeObject<List<Product>>(res);
             var model = new ProductPageView
             {
-                Products = productDTO,
-                PageNumber = 1,
-                PageSize = 10,
-                TotalProducts = await GetTotalProducts()
-            };
-
-            return View(model);
-        }
-
-        public async Task<IActionResult> Page(int pageNumber)
-        {
-            var response = await httpClient.GetStringAsync($"products/GetProducts?pageNumber={pageNumber}&pageSize=10");
-            var productDTO = JsonConvert.DeserializeObject<List<Product>>(response);
-            var model = new ProductPageView
-            {
-                Products = productDTO,
-                PageNumber = pageNumber,
-                PageSize = 10,
-                TotalProducts = await GetTotalProducts()
-            };
-
-            return View(model);
-        }
-
-        private async Task<int> GetTotalProducts()
-        {
-            var response = await httpClient.GetStringAsync("products/GetProducts");
-            var productDTO = JsonConvert.DeserializeObject<List<Product>>(response);
-            return productDTO.Count;
-        }
-
-        public async Task<IActionResult> Details(string id)
-        {
-            var res = await httpClient.GetStringAsync("products/GetSingleByID?id=" + id);
-            var productDTO = JsonConvert.DeserializeObject<Product>(res);
-            return View(productDTO);
-        }
-
-        [HttpGet("id")]
-        public async Task<IActionResult> ProductBy(string id)
-        {
-            var res = await httpClient.GetStringAsync("products/GetProductByManufacturer?manufacturer=" + id);
-            var productDTO = JsonConvert.DeserializeObject<List<Product>>(res);
-            var view = new ProductByView
-            {
                 Products = productDTO
             };
-            ViewBag.Total = "The (" + id + ") have " + productDTO.Count + " items(s)";
-            return View(view);
+
+            return View(model);
         }
 
         public async Task<IActionResult> SearchByName(string name)
         {
-            if(name == null)
+            if (name == null)
             {
                 var res = await httpClient.GetStringAsync("products/GetProducts");
                 var rs = JsonConvert.DeserializeObject<List<Product>>(res);
@@ -106,7 +56,6 @@ namespace Client.Controllers
             ViewBag.Message = "Found " + result.Count + " item(s)";
             return View(view);
         }
-
 
         public async Task<IActionResult> Create()
         {
@@ -134,7 +83,7 @@ namespace Client.Controllers
 
             var response = await httpClient.PostAsync(url, content);
             await response.Content.ReadAsStringAsync();
-            return RedirectToAction("Index", "Products");
+            return RedirectToAction("Index", "Admin");
         }
 
         [HttpGet]
@@ -167,7 +116,7 @@ namespace Client.Controllers
 
             var response = await httpClient.PutAsync(url, content);
             await response.Content.ReadAsStringAsync();
-            return RedirectToAction("Index", "Products");
+            return RedirectToAction("Index", "Admin");
         }
 
         public async Task<IActionResult> Delete(int id)

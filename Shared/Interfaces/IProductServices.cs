@@ -9,7 +9,7 @@ namespace Shared.Interfaces
 {
     public interface IProductServices
     {
-        Task<List<Product>> GetAll(int numberPage, int sizePage);
+        Task<List<Product>> GetAll();
 
         Task<Product> GetSingleByID(int id);
 

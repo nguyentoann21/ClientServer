@@ -1,0 +1,59 @@
+﻿@model Shared.Models.Product
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div>
+    <h1 style="text-align: center; font-size: 42px; font-weight: bold; color: #016848">Admin Dashboard</h1>
+</div>
+
+<h1 style="text-align: center">Remove Product</h1>
+
+<div class="items-form-group">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label asp-for="ProductID" class="control-label items-text-bolder">ID</label>
+            <input asp-for="ProductID" class="form-control" readonly />
+            <span asp-validation-for="ProductName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ProductName" class="control-label items-text-bolder">Name</label>
+            <input asp-for="ProductName" class="form-control" readonly />
+            <span asp-validation-for="ProductName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ProductDescription" class="control-label items-text-bolder">Description</label>
+            <textarea asp-for="ProductDescription" class="form-control" readonly></textarea>
+            <span asp-validation-for="ProductDescription" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ProductPrice" class="control-label items-text-bolder">Price</label>
+            <input asp-for="ProductPrice" class="form-control" readonly />
+            <span asp-validation-for="ProductPrice" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Quantity" class="control-label items-text-bolder">Quantity</label>
+            <input asp-for="Quantity" class="form-control" readonly />
+            <span asp-validation-for="Quantity" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CreateOn" class="control-label items-text-bolder">Created Date</label>
+            <input asp-for="CreateOn" type="date" class="form-control" readonly />
+            <span asp-validation-for="CreateOn" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <p class="items-text-bolder">Image</p>
+            <img src="@Model.ProductImage" width="100" height="100" alt="@Model.ProductName" />
+        </div>
+        <div class="form-group">
+            <label asp-for="ManufacturerID" class="control-label items-text-bolder">Type</label>
+            <input asp-for="ManufacturerID" class="form-control" value="@Model.Manufacturers.ManufacturerName" readonly />
+        </div>
+        <form asp-action="Delete" style="margin-top: 5px">
+            <input type="hidden" asp-for="ProductID" />
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            <a asp-action="Index" class="btn btn-primary">Back to List</a>
+        </form>
+    </div>
+</div>

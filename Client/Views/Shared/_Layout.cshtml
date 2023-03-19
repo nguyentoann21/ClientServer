@@ -8,79 +8,17 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Client.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="~/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" />
+
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a asp-area="" asp-controller="Products" asp-action="Index">
-                    <img src="https://img.freepik.com/free-vector/font-design-word-toy-shop-with-many-toys_1308-42318.jpg" width="120" height="80" alt="Home" />
-                    </a>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-route-id="OP" asp-area="" asp-controller="Products" asp-action="ProductBy">Once Piece</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-route-id="DRB" asp-area="" asp-controller="Products" asp-action="ProductBy">Dragon Ball</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-route-id="AD" asp-area="" asp-controller="Products" asp-action="ProductBy">Adventure</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-route-id="PO" asp-area="" asp-controller="Products" asp-action="ProductBy">Pokemon</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-route-id="BR" asp-area="" asp-controller="Products" asp-action="ProductBy">Bear Rich</a>
-                        </li>
-                        <li>
-                            <div>
-                                <form asp-controller="Products" asp-action="SearchByName" method="get" asp-route-id="name">
-                                    <div class="form-group">
-                                        <label for="search-name">Search by Name:</label>
-                                        <input type="text" class="form-control" name="name" id="name" placeholder="Enter product name">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Search</button>
-                                </form>
-                            </div>
-                        </li>
-                        @if(Context.Session.GetString("role")=="CUS"){
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
-
-                @if (Context.Session.GetString("user") == null)
-                {
-                    <a asp-controller="Account" asp-action="signin" style="right:10px; margin-right:10px;" class="btn btn-primary">SignIn</a>
-                    <a asp-controller="Account" asp-action="signup" style="right:10px" class="btn btn-primary">SignUp</a>
-                }
-                else if (Context.Session.GetString("user") != null)
-                {
-                    <a asp-action="Logout" asp-controller="Account" class="btn btn-primary">Logout</a>
-                    <span><a href="/Account/ChangePassword" class="btn btn-danger" style="margin-left:10px; color:white !important;">Change Password</a></span>
-                }
-            </div>
-        </nav>
-    </header>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - Client - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

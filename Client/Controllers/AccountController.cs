@@ -87,8 +87,8 @@ namespace Client.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string jwtToken = response.Content.ReadAsStringAsync().Result;
-                    HttpContext.Session.SetString("token", jwtToken);
+                    //string jwtToken = response.Content.ReadAsStringAsync().Result;
+                    //HttpContext.Session.SetString("token", jwtToken);
                     useAccount = await result.Content.ReadAsAsync<AccCusDTO>();
                     HttpContext.Session.SetString("user", account.Email);
                     HttpContext.Session.SetString("role", useAccount.RoleID.ToString());
@@ -97,9 +97,9 @@ namespace Client.Controllers
 
                     if (useAccount.RoleID == "AD")
                     {
-                        return Redirect("/Products/Index");
+                        return Redirect("/Admin/Index");
                     }
-                    return Redirect("/Products/Index");
+                    return Redirect("/Home/Index");
 
                 }
                 else
@@ -118,7 +118,7 @@ namespace Client.Controllers
             HttpContext.Session.Remove("user");
             HttpContext.Session.Remove("role");
 
-            return RedirectToAction("Index", "Products");
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult SignUp()
         {
@@ -179,7 +179,7 @@ namespace Client.Controllers
             }
             return accounts.ToList();
         }
-        public IActionResult ChangePassword()
+        public IActionResult ChangePasswords()
         {
             return View();
         }
@@ -208,9 +208,12 @@ namespace Client.Controllers
                 NewPassword = newpassword,
                 ConfirmPassword= confirm
             });
-            
-            
-            return RedirectToAction("Index", "Products");
+
+            if (HttpContext.Session.GetString("role") == "AD")
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+            return RedirectToAction("Index", "Home");
         }
         [HttpPut]
         public async Task ChangePasswordAction(ChangePassword changePassword)

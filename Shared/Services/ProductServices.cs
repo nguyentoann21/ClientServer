@@ -29,9 +29,9 @@ namespace Shared.Services
             return Convert.ToBoolean(result);
         }
 
-        public async Task<List<Product>> GetAll(int pageNumber = 1, int pageSize = 10)
+        public async Task<List<Product>> GetAll()
         {
-            var result = await _db.Products.Include(x => x.Manufacturers).OrderBy(p => p.ProductID).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            var result = await _db.Products.Include(x => x.Manufacturers).ToListAsync();
             return result;
         }
 

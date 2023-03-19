@@ -1,11 +1,188 @@
-﻿@{
+﻿@model Shared.PageView.ProductPageView
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <div>
-        <a asp-controller="account" asp-action="signup">SignUp</a>
-        <a asp-controller="account" asp-action="signin">SignIn</a>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="https://img.freepik.com/free-vector/font-design-word-toy-shop-with-many-toys_1308-42318.jpg" width="100" height="70" alt="Home Page" />
+            </a>
+            <a class="navbar-brand" style="margin-left: 10px; font-size: 23px; font-weight: 600; color: blue" asp-area="" asp-controller="Home" asp-action="Index">Toy-Shop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1" style="font-size: 18px; font-weight: 600">
+                    <li class="nav-item spaces">
+                        <a class="nav-link text-dark" asp-route-id="OP" asp-area="" asp-controller="Home" asp-action="Categories">Once Piece</a>
+                    </li>
+                    <li class="nav-item spaces">
+                        <a class="nav-link text-dark" asp-route-id="DRB" asp-area="" asp-controller="Home" asp-action="Categories">Dragon Ball</a>
+                    </li>
+                    <li class="nav-item spaces">
+                        <a class="nav-link text-dark" asp-route-id="AD" asp-area="" asp-controller="Home" asp-action="Categories">Marvel</a>
+                    </li>
+                    <li class="nav-item spaces">
+                        <a class="nav-link text-dark" asp-route-id="PO" asp-area="" asp-controller="Home" asp-action="Categories">Pokémon</a>
+                    </li>
+                    <li class="nav-item spaces">
+                        <a class="nav-link text-dark" asp-route-id="BR" asp-area="" asp-controller="Home" asp-action="Categories">Bear Brick</a>
+                    </li>
+                    <li class="nav-item spaces">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="display: flex; width: 20%">
+            @if (Context.Session.GetString("user") == null)
+            {
+                <a asp-action="SignIn" asp-controller="Account">
+                    <button type="submit"
+                        style="background-color: lightgreen;
+                       margin-right: 5px;
+                       color: #000;
+                       font-size: 18px;
+                       font-weight: bold;
+                       border: 0px solid;
+                       border-radius: 10px;
+                       padding: 5px 10px">
+                        Sign In
+                    </button>
+                </a>
+                <a asp-action="SignUp" asp-controller="Account">
+                    <button type="submit"
+                        style="background-color: orangered;
+                       color: #fff;
+                       font-size: 18px;
+                       border: 0px solid;
+                       border-radius: 10px;
+                       font-weight: bold;
+                       padding: 5px 10px">
+                        Sign Up
+                    </button>
+                </a>
+            }
+            else
+            {
+                <a asp-action="ChangePasswords" asp-controller="Account">
+                    <button type="submit"
+                        style="background-color: lightgreen;
+                       margin-right: 5px;
+                       color: #000;
+                       font-size: 18px;
+                       font-weight: bold;
+                       border: 0px solid;
+                       border-radius: 10px;
+                       padding: 5px 10px">
+                        @Context.Session.GetString("user")
+                    </button>
+                </a>
+                <a asp-action="Logout" asp-controller="Account">
+                    <button type="submit"
+                        style="background-color: orangered;
+                       color: #fff;
+                       font-size: 18px;
+                       border: 0px solid;
+                       border-radius: 10px;
+                       font-weight: bold;
+                       padding: 5px 10px">
+                        <i class="fas fa-sign-out-alt style=" font-size:40px;color:blue;float:right;""></i>
+                    </button>
+                </a>
+            }
+        </div>
+    </nav>
+</header>
+
+<div class="search-forms">
+    <form class="search-containers" asp-controller="Home" asp-action="SearchByName" method="get" asp-route-id="name">
+        <div class="form-group">
+            <input type="text" class="form-control search-input" name="name" id="name" placeholder="Search by product name">
+        </div>
+        <button type="submit" class="btn btn-primary search-button">Search</button>
+    </form>
+</div>
+
+<div class="row">
+    @foreach (var product in Model.Products)
+    {
+        <div class="col-md-3">
+            <div class="card mb-4 shadow-sm items-li-view">
+                <img src="@product.ProductImage" class="card-img-top items-image-view" alt="@product.ProductName">
+                <div class="card-body">
+                    <h4 class="card-title items-name">@product.ProductName</h4>
+                    <p class="card-text items-description">@product.ProductDescription</p>
+                    <p class="card-text items-type">@product.Manufacturers.ManufacturerName</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a href="@Url.Action("Details", "Home", new { id = product.ProductID })" class="btn btn-sm btn-outline-secondary">
+                                <i class="fa fa-search w3-padding w3-text-red"></i>
+                            </a>
+                        </div>
+                        <p class="text-muted items-price">@product.ProductPrice.ToString("c")</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="home-footer">
+    <div class="home-footer-main">
+        <div class="home-footer-left">
+            <h5 class="home-footer-left-title">Get In Touch</h5>
+            <p class="home-footer-left-text">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
+            <p class="home-footer-left-local"><i class="fa fa-map-marker-alt"></i>&emsp;123 Street, New York, USA</p>
+            <p class="home-footer-left-email"><i class="fa fa-envelope"></i>&emsp;info@example.com</p>
+            <p class="home-footer-left-phone"><i class="fa fa-phone-alt"></i>&emsp;(+84)12 345 67890</p>
+        </div>
+        <div class="home-footer-right">
+            <div class="home-footer-right-container">
+                <div class="home-footer-right-content">
+                    <h5 class="home-footer-right-title">Quick Shop</h5>
+                    <div class="home-footer-right-item">
+                        <a class="home-footer-right-item-text" href="#">Home</a>
+                        <a class="home-footer-right-item-text" href="#">Shopping</a>
+                        <a class="home-footer-right-item-text" href="#">Cart</a>
+                        <a class="home-footer-right-item-text" href="#">Favorite</a>
+                        <a class="home-footer-right-item-text" href="#">History</a>
+                    </div>
+                </div>
+                <div class="home-footer-right-content">
+                    <h5 class="home-footer-right-title">My Account</h5>
+                    <div class="home-footer-right-item">
+                        <a class="home-footer-right-item-text" href="#">Home</a>
+                        <a class="home-footer-right-item-text" href="#">Shopping</a>
+                        <a class="home-footer-right-item-text" href="#">Cart</a>
+                        <a class="home-footer-right-item-text" href="#">Favorite</a>
+                        <a class="home-footer-right-item-text" href="#">History</a>
+                    </div>
+                </div>
+                <div class="home-footer-right-content">
+                    <h5 class="home-footer-right-title">Newsletter</h5>
+                    <p class="home-footer-left-text">Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
+                    <form action="">
+                        <div class="footer-email-input">
+                            <input type="text" class="input-email-text" placeholder="Your Email Address">
+                            <div class="footer-button">
+                                <button class="footer-button-up">Sign Up</button>
+                            </div>
+                        </div>
+                    </form>
+                    <h6 class="home-footer-right-title">Follow Us</h6>
+                    <div class="footer-social-connection">
+                        <a class="footer-social-connection-icon" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="footer-social-connection-icon" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="footer-social-connection-icon" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="footer-social-connection-icon" href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -20,7 +20,7 @@ namespace Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await _services.GetAll(1, 10);            
+            var products = await _services.GetAll();            
             return Ok(products);
         }
 
