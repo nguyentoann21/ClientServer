@@ -12,7 +12,7 @@ namespace Shared.DataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=123456;Database=ToyStores;Trusted_Connection=true;Encrypt=false");
+            optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=123456;Database=ShopStored;Trusted_Connection=true;Encrypt=false");
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
 
@@ -36,6 +36,26 @@ namespace Shared.DataAccess
                 new Account
                 {
                     AccountID = 1,
+                    Email = "toannvce150811@fpt.edu.vn",
+                    Password = "123456",
+                    Address = "CanTho",
+                    FullName = "Nguyen Van Toan",
+                    PhoneNumber = "0762871115",
+                    RoleID = "AD"
+                },
+                new Account
+                {
+                    AccountID = 2,
+                    Email = "nguyenvtoan.01@gmail.com",
+                    Password = "123456",
+                    Address = "CanTho",
+                    FullName = "Nguyen Van Toan",
+                    PhoneNumber = "0123456789",
+                    RoleID = "CUS"
+                },
+                new Account
+                {
+                    AccountID = 3,
                     Email = "tranthanhliem@gmail.com",
                     Password = "123456",
                     Address = "CanTho",
@@ -45,11 +65,51 @@ namespace Shared.DataAccess
                 },
                 new Account
                 {
-                    AccountID = 2,
+                    AccountID = 4,
                     Email = "tranthanhliem1@gmail.com",
                     Password = "123456",
                     Address = "CanTho",
                     FullName = "Tran Thanh Liem",
+                    PhoneNumber = "0123456789",
+                    RoleID = "CUS"
+                },
+                new Account
+                {
+                    AccountID = 5,
+                    Email = "tongncce150400@fpt.edu.vn",
+                    Password = "123456",
+                    Address = "CanTho",
+                    FullName = "Nguyen Chanh Tong",
+                    PhoneNumber = "0123456789",
+                    RoleID = "AD"
+                },
+                new Account
+                {
+                    AccountID = 6,
+                    Email = "nguyentong@gmail.com",
+                    Password = "123456",
+                    Address = "CanTho",
+                    FullName = "Tran Thanh Liem",
+                    PhoneNumber = "0123456789",
+                    RoleID = "CUS"
+                },
+                new Account
+                {
+                    AccountID = 7,
+                    Email = "nhathmce150821@fpt.edu.vn",
+                    Password = "123456",
+                    Address = "CanTho",
+                    FullName = "Huynh Minh Nhat",
+                    PhoneNumber = "0123456789",
+                    RoleID = "AD"
+                },
+                new Account
+                {
+                    AccountID = 8,
+                    Email = "minhnhat01@gmail.com",
+                    Password = "123456",
+                    Address = "CanTho",
+                    FullName = "Huynh Minh Nhat",
                     PhoneNumber = "0123456789",
                     RoleID = "CUS"
                 }
